@@ -1,14 +1,15 @@
 # VectorFusion
 
-**Title: VectorFusion: Text-to-SVG by Abstracting Pixel-Based Diffusion Models**
+> Title: VectorFusion: Text-to-SVG by Abstracting Pixel-Based Diffusion Models
 
 In this work, we show that a text-conditioned diffusion model trained on pixel representations of images can be used to
 generate SVG-exportable vector graphics.
 
 ## Update
 
-- [10/2023] We released the [DiffSketcher code](https://github.com/ximinng/DiffSketcher).
-- [10/2023] We released the VectorFusion code.
+- [10/2023] 🔥 **We released the [DiffSketcher code](https://github.com/ximinng/DiffSketcher). A method of synthesizing
+  vector sketches by text prompts.**
+- [10/2023] 🔥 We released the VectorFusion code.
 
 ## Installation
 
@@ -61,8 +62,6 @@ pip install svgwrite svgpathtools cssutils torch-tools
 python setup.py install
 ```
 
-> optional: use `conda -i https://pypi.tuna.tsinghua.edu.cn/simple` to accelerate.
-
 ## Quickstart
 
 Example:
@@ -92,7 +91,7 @@ optional:
 - `-mv`, a.k.a `--make_video`: make a video of the rendering process (**it will take much longer**).
 - `-frame_freq`, a.k.a `--video_frame_freq`: control video frame.
 
-**check the [Code Run List](https://github.com/ximinng/DiffSketcher/RUN.md) for more scripts.**
+**check the [Code Run List](https://github.com/ximinng/VectorFusion-pytorch/RUN.md) for more scripts.**
 
 ## Acknowledgement
 
@@ -127,4 +126,4 @@ If you use this code for your research, please cite the following work:
 
 ## Licence
 
-This work is licensed under a MIT License.
+This repo is licensed under a MIT License.

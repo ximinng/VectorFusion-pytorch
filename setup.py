@@ -18,6 +18,7 @@ setup(
         'artificial intelligence',
         'aigc',
         'generative models',
+        'vector graphic'
     ],
     install_requires=[
         'omegaconf',  # YAML processor
