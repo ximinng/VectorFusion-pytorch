@@ -48,6 +48,17 @@ def plt_batch(
     plt.close()
 
 
+def insert_newline(string, point=9):
+    # split by blank
+    words = string.split()
+    if len(words) <= point:
+        return string
+
+    word_chunks = [words[i:i + point] for i in range(0, len(words), point)]
+    new_string = "\n".join(" ".join(chunk) for chunk in word_chunks)
+    return new_string
+
+
 def log_tensor_img(inputs, output_dir, output_prefix="input", norm=False, dpi=300):
     grid = make_grid(inputs, normalize=norm, pad_value=2)
     ndarr = grid.mul(255).add_(0.5).clamp_(0, 255).permute(1, 2, 0).to("cpu", torch.uint8).numpy()
