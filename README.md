@@ -1,11 +1,13 @@
-# VectorFusion: Text-to-SVG by Abstracting Pixel-Based Diffusion Models
+# VectorFusion
+
+**Title: VectorFusion: Text-to-SVG by Abstracting Pixel-Based Diffusion Models**
 
 In this work, we show that a text-conditioned diffusion model trained on pixel representations of images can be used to
 generate SVG-exportable vector graphics.
 
 ## Update
 
-- [10/2023] We released the DiffSketcher code.
+- [10/2023] We released the [DiffSketcher code](https://github.com/ximinng/DiffSketcher).
 - [10/2023] We released the VectorFusion code.
 
 ## Installation
@@ -13,8 +15,8 @@ generate SVG-exportable vector graphics.
 Create a new conda environment:
 
 ```shell
-conda create --name svgdreamer python=3.10
-conda activate svgdreamer
+conda create --name vf python=3.10
+conda activate vf
 ```
 
 Install pytorch and the following libraries:
@@ -22,7 +24,6 @@ Install pytorch and the following libraries:
 ```shell
 conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.6 -c pytorch -c nvidia
 pip install hydra-core omegaconf BeautifulSoup4
-pip install freetype-py shapely
 pip install opencv-python scikit-image matplotlib visdom wandb
 pip install triton numba
 pip install numpy scipy timm scikit-fmm einops
@@ -67,18 +68,17 @@ python setup.py install
 Example:
 
 ```shell
-python run_painterly_render.py \ 
-  -c diffsketcher.yaml \
-  -eval_step 10 -save_step 10 \
-  -update "token_ind=2 num_paths=96 sds.warmup=1500 num_iter=2000" \ 
-  -pt "A horse is drinking water by the lake" \ 
-  -respath ./workdir/draw_horse \ 
-  -d 998 \
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
+  -c vectorfusion.yaml \
+  -pt "a panda rowing a boat in a pond. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" \ 
+  -save_step 10 \ 
+  -respath ./workdir/ZPanda \ 
+  -update "K=20" \ 
+  -d 8888 \
   --download
 ```
 
 - `-c` a.k.a `--config`: configuration file.
-- `-eval_step`: the step size used to eval the method (**too frequent calls will result in longer times**).
 - `-save_step`: the step size used to save the result (**too frequent calls will result in longer times**).
 - `-update`: a tool for editing the hyper-params of the configuration file, so you don't need to create a new yaml.
 - `-pt` a.k.a `--prompt`: text prompt.
@@ -92,7 +92,7 @@ optional:
 - `-mv`, a.k.a `--make_video`: make a video of the rendering process (**it will take much longer**).
 - `-frame_freq`, a.k.a `--video_frame_freq`: control video frame.
 
-**check the [Code Run List](https://github.com/ximinng/SVGDreamer/blob/master/RUN.md) for more scripts.**
+**check the [Code Run List](https://github.com/ximinng/DiffSketcher/RUN.md) for more scripts.**
 
 ## Acknowledgement
 
