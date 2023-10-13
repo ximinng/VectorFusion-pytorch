@@ -1,6 +1,4 @@
-# VectorFusion
-
-> Title: VectorFusion: Text-to-SVG by Abstracting Pixel-Based Diffusion Models
+# VectorFusion: Text-to-SVG by Abstracting Pixel-Based Diffusion Models
 
 In this work, we show that a text-conditioned diffusion model trained on pixel representations of images can be used to
 generate SVG-exportable vector graphics.
