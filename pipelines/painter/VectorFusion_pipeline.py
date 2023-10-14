@@ -88,6 +88,8 @@ class VectorFusionPipeline(ModelState):
         if args.style == "pixelart":
             args.path_schedule = 'list'
             args.schedule_each = list([args.grid])
+        elif args.style == "sketch":
+            args.train_stroke = True
 
         if args.train_stroke:
             args.path_reinit.use = False
@@ -302,7 +304,7 @@ class VectorFusionPipeline(ModelState):
         img = renderer.init_image(stage=0, num_paths=self.args.num_paths)
         log_tensor_img(img, self.results_path, output_prefix=f"init_img_stage_two")
 
-        optimizer = PainterOptimizer(renderer, self.args.style, self.args.num_iter,
+        optimizer = PainterOptimizer(renderer, self.args.style, self.args.sds.num_iter,
                                      self.args.lr_base,
                                      self.args.train_stroke,
                                      self.args.trainable_bg)
