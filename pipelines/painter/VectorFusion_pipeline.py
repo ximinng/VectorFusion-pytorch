@@ -27,6 +27,7 @@ class VectorFusionPipeline(ModelState):
     def __init__(self, args):
         logdir_ = f"{'scratch' if args.skip_live else 'baseline'}" \
                   f"-{args.model_id}" \
+                  f"-{args.style}" \
                   f"-sd{args.seed}" \
                   f"-im{args.image_size}" \
                   f"-P{args.num_paths}" \
@@ -88,8 +89,6 @@ class VectorFusionPipeline(ModelState):
         if args.style == "pixelart":
             args.path_schedule = 'list'
             args.schedule_each = list([args.grid])
-        elif args.style == "sketch":
-            args.train_stroke = True
 
         if args.train_stroke:
             args.path_reinit.use = False
@@ -346,7 +345,8 @@ class VectorFusionPipeline(ModelState):
                 loss.backward()
                 optimizer.step_()
 
-                renderer.clip_curve_shape()
+                if self.args.style != "sketch":
+                    renderer.clip_curve_shape()
 
                 # re-init paths
                 if self.step % path_reinit.freq == 0 and self.step < path_reinit.stop_step and self.step != 0:
