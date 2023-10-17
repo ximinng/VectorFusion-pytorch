@@ -22,7 +22,8 @@ Install pytorch and the following libraries:
 
 ```shell
 conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.6 -c pytorch -c nvidia
-pip install hydra-core omegaconf BeautifulSoup4
+pip install omegaconf BeautifulSoup4
+pip install shapely
 pip install opencv-python scikit-image matplotlib visdom wandb
 pip install triton numba
 pip install numpy scipy timm scikit-fmm einops
