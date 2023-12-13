@@ -5,6 +5,8 @@ generate SVG-exportable vector graphics.
 
 ## Update
 
+- [12/2023] 🔥 **We released the [PyTorch-SVGRender](https://github.com/ximinng/PyTorch-SVGRender). Pytorch-SVGRender is
+  the go-to library for state-of-the-art differentiable rendering methods for image vectorization.**
 - [10/2023] 🔥 **We released the [DiffSketcher code](https://github.com/ximinng/DiffSketcher). A method of synthesizing
   vector sketches by text prompts.**
 - [10/2023] 🔥 We released the VectorFusion code.
@@ -115,11 +117,13 @@ If you use this code for your research, please cite the following work:
   year={2023}
 }
 
-@article{xing2023diffsketcher,
-  title={DiffSketcher: Text Guided Vector Sketch Synthesis through Latent Diffusion Models},
-  author={Xing, Ximing and Wang, Chuang and Zhou, Haitao and Zhang, Jing and Yu, Qian and Xu, Dong},
-  journal={arXiv preprint arXiv:2306.14685},
-  year={2023}
+@inproceedings{
+    xing2023diffsketcher,
+    title={DiffSketcher: Text Guided Vector Sketch Synthesis through Latent Diffusion Models},
+    author={XiMing Xing and Chuang Wang and Haitao Zhou and Jing Zhang and Qian Yu and Dong Xu},
+    booktitle={Thirty-seventh Conference on Neural Information Processing Systems},
+    year={2023},
+    url={https://openreview.net/forum?id=CY1xatvEQj}
 }
 ```
 
