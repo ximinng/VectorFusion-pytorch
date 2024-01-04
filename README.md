@@ -3,8 +3,11 @@
 In this work, we show that a text-conditioned diffusion model trained on pixel representations of images can be used to
 generate SVG-exportable vector graphics.
 
-## Update
+## Updates
 
+- [01/2024] 🔥 **We released the [SVGDreamer](https://ximinng.github.io/SVGDreamer-project/). SVGDreamer is
+  a novel text-guided vector graphics synthesis method. This method considers both the editing of vector graphics and
+  the quality of the synthesis.**
 - [12/2023] 🔥 **We released the [PyTorch-SVGRender](https://github.com/ximinng/PyTorch-SVGRender). Pytorch-SVGRender is
   the go-to library for state-of-the-art differentiable rendering methods for image vectorization.**
 - [10/2023] 🔥 **We released the [DiffSketcher code](https://github.com/ximinng/DiffSketcher). A method of synthesizing
