@@ -75,9 +75,9 @@ python setup.py install
 
 Preview:
 
-| <img src="./img/Sydney_Opera_House_LIVE.svg" style="width: 300px; height: 300px;"> | <img src="./img/Sydney_Opera_House_finetune.svg" style="width: 300px; height: 300px;"> |
-|------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
-| convert to SVG with LIVE                                                           | fine-tune with VectorFusion                                                            |
+| <img src="./img/Sydney_Opera_House_SD.png" style="width: 250px; height: 250px;"> | <img src="./img/Sydney_Opera_House_LIVE.svg" style="width: 250px; height: 250px;"> | <img src="./img/Sydney_Opera_House_finetune.svg" style="width: 250px; height: 250px;"> |
+|----------------------------------------------------------------------------------|------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| (a) Sample a raster image with Stable Diffusion                                  | (b) convert to SVG with LIVE                                                       | (c) fine-tune with VectorFusion                                                        |
 
 Script:
 
@@ -90,8 +90,6 @@ python run_painterly_render.py \
   -respath ./workdir/Sydney \
   -d 857578 \
   --download
-
-python run_painterly_render.py -c vectorfusion.yaml -pt "the Sydney Opera House. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 10 -update "K=4" -rdbz
 ```
 
 - `-c` a.k.a `--config`: configuration file.
@@ -106,7 +104,8 @@ optional:
 
 - `-npt`, a.k.a `--negative_prompt`: negative text prompt.
 - `-mv`, a.k.a `--make_video`: make a video of the rendering process (**it will take much longer**).
-- `-frame_freq`, a.k.a `--video_frame_freq`: control video frame.
+- `-frame_freq`, a.k.a `--video_frame_freq`: the interval of the number of steps to save the image.
+- `-framerate`, a.k.a `--video_frame_rate`: control the playback speed of the output video.
 
 **More Examples:**
 
