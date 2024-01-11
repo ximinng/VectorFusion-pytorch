@@ -54,6 +54,13 @@ class VectorFusionPipeline(ModelState):
 
         self.select_fpth = self.results_path / 'select_sample.png'
 
+        # make video log
+        self.make_video = self.args.make_video
+        if self.make_video:
+            self.frame_idx = 0
+            self.frame_log_dir = self.results_path / "frame_logs"
+            self.frame_log_dir.mkdir(parents=True, exist_ok=True)
+
         init_diffvg(self.device, True, args.print_timing)
 
         if args.model_id == "sdxl":
@@ -211,6 +218,10 @@ class VectorFusionPipeline(ModelState):
                 for t in range(self.args.num_iter):
                     raster_img = renderer.get_image(step=t).to(self.device)
 
+                    if self.make_video and (self.step % self.args.video_frame_freq == 0 or self.step == total_step - 1):
+                        log_tensor_img(raster_img, self.frame_log_dir, output_prefix=f"iter{self.frame_idx}")
+                        self.frame_idx += 1
+
                     if self.args.use_distance_weighted_loss and not (self.args.style == "pixelart"):
                         loss_weight = renderer.calc_distance_weight(loss_weight_keep)
 
@@ -321,6 +332,10 @@ class VectorFusionPipeline(ModelState):
             while self.step < total_step:
                 raster_img = renderer.get_image(step=self.step).to(self.device)
 
+                if self.make_video and (self.step % self.args.video_frame_freq == 0 or self.step == total_step - 1):
+                    log_tensor_img(raster_img, self.frame_log_dir, output_prefix=f"iter{self.frame_idx}")
+                    self.frame_idx += 1
+
                 L_sds, grad = self.diffusion.score_distillation_sampling(
                     raster_img,
                     im_size=self.args.sds.im_size,
@@ -383,6 +398,16 @@ class VectorFusionPipeline(ModelState):
 
         final_svg_fpth = self.results_path / "finetune_final.svg"
         renderer.save_svg(final_svg_fpth)
+
+        if self.make_video:
+            from subprocess import call
+            call([
+                "ffmpeg",
+                "-framerate", f"{self.args.video_frame_rate}",
+                "-i", (self.frame_log_dir / "iter%d.png").as_posix(),
+                "-vb", "20M",
+                (self.results_path / "VF_rendering_stage2.mp4").as_posix()
+            ])
 
         self.close(msg="painterly rendering complete.")
 

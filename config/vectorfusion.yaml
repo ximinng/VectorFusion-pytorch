@@ -1,4 +1,3 @@
-seed: 1
 image_size: 600
 path_svg: ~  # if you want to load a svg file and train from it
 skip_live: False
@@ -38,7 +37,7 @@ path_reinit: # reinitializing paths
 # diffusion
 model_id: "sd15" # sd14, sd15, sd21, sd21b, sdxl
 ldm_speed_up: False
-enable_xformers: False
+enable_xformers: True
 gradient_checkpoint: False
 num_inference_steps: 50
 guidance_scale: 7.5 # sdxl default 5.0

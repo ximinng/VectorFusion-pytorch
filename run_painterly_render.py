@@ -90,6 +90,9 @@ if __name__ == '__main__':
     parser.add_argument("-frame_freq", "--video_frame_freq",
                         default=1, type=int,
                         help="video frame control.")
+    parser.add_argument("-framerate", "--video_frame_rate",
+                        default=24, type=int,
+                        help="by adjusting the frame rate, you can control the playback speed of the output video.")
     args = parser.parse_args()
 
     # set the random seed range

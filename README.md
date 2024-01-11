@@ -1,7 +1,10 @@
 # VectorFusion: Text-to-SVG by Abstracting Pixel-Based Diffusion Models
 
-In this work, we show that a text-conditioned diffusion model trained on pixel representations of images can be used to
+In this work, the authors show that a text-conditioned diffusion model trained on pixel representations of images can be
+used to
 generate SVG-exportable vector graphics.
+
+> official website: https://vectorfusion.github.io/
 
 ## Updates
 
@@ -68,17 +71,27 @@ python setup.py install
 
 ## Quickstart
 
-Example:
+**Example:**
+
+Preview:
+
+| <img src="./img/Sydney_Opera_House_LIVE.svg" style="width: 300px; height: 300px;"> | <img src="./img/Sydney_Opera_House_finetune.svg" style="width: 300px; height: 300px;"> |
+|------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| convert to SVG with LIVE                                                           | fine-tune with VectorFusion                                                            |
+
+Script:
 
 ```shell
-CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
+python run_painterly_render.py \ 
   -c vectorfusion.yaml \
-  -pt "a panda rowing a boat in a pond. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" \ 
+  -pt "the Sydney Opera House. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" \
   -save_step 10 \ 
-  -respath ./workdir/ZPanda \ 
-  -update "K=20" \ 
-  -d 8888 \
+  -update "K=4" \ 
+  -respath ./workdir/Sydney \
+  -d 857578 \
   --download
+
+python run_painterly_render.py -c vectorfusion.yaml -pt "the Sydney Opera House. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 10 -update "K=4" -rdbz
 ```
 
 - `-c` a.k.a `--config`: configuration file.
@@ -95,7 +108,13 @@ optional:
 - `-mv`, a.k.a `--make_video`: make a video of the rendering process (**it will take much longer**).
 - `-frame_freq`, a.k.a `--video_frame_freq`: control video frame.
 
-**check the [Code Run List](https://github.com/ximinng/VectorFusion-pytorch/RUN.md) for more scripts.**
+**More Examples:**
+
+- check the [examples.md](https://github.com/ximinng/VectorFusion-pytorch/examples.md) for more cases.
+
+**More Scripts:**
+
+- check the [Run.md](https://github.com/ximinng/VectorFusion-pytorch/RUN.md) for more scripts.
 
 ## Acknowledgement
 
