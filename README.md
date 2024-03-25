@@ -19,6 +19,8 @@ generate SVG-exportable vector graphics.
 
 ## Installation
 
+### Step by step 
+
 Create a new conda environment:
 
 ```shell
@@ -67,6 +69,12 @@ conda install -y -c anaconda cmake
 conda install -y -c conda-forge ffmpeg
 pip install svgwrite svgpathtools cssutils torch-tools
 python setup.py install
+```
+
+### Docker Usage
+
+```shell
+docker run --name diffsketcher --gpus all -it --ipc=host ximingxing/svgrender:v1 /bin/bash
 ```
 
 ## Quickstart
