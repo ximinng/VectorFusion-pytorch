@@ -19,7 +19,7 @@ generate SVG-exportable vector graphics.
 
 ## Installation
 
-### Step by step 
+### Step by step
 
 Create a new conda environment:
 
@@ -74,7 +74,7 @@ python setup.py install
 ### Docker Usage
 
 ```shell
-docker run --name diffsketcher --gpus all -it --ipc=host ximingxing/svgrender:v1 /bin/bash
+docker run --name vectorfusion --gpus all -it --ipc=host ximingxing/svgrender:v1 /bin/bash
 ```
 
 ## Quickstart
@@ -85,7 +85,7 @@ Preview:
 
 | <img src="./img/Sydney_Opera_House_SD.png" style="width: 250px; height: 250px;"> | <img src="./img/Sydney_Opera_House_LIVE.svg" style="width: 250px; height: 250px;"> | <img src="./img/Sydney_Opera_House_finetune.svg" style="width: 250px; height: 250px;"> |
 |----------------------------------------------------------------------------------|------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
-| (a) Sample a raster image with Stable Diffusion                                  | (b) convert to SVG with LIVE                                                       | (c) fine-tune with VectorFusion                                                        |
+| (a) ) Sample raster image with Stable Diffusion                                  | (b) Convert raster image to a vector via LIVE                                      | (c) VectorFusion: Fine tune by LSDS                                                    |
 
 Script:
 
@@ -117,11 +117,11 @@ optional:
 
 **More Examples:**
 
-- check the [examples.md](https://github.com/ximinng/VectorFusion-pytorch/examples.md) for more cases.
+- check the [examples.md](https://github.com/ximinng/VectorFusion-pytorch/blob/master/examples.md) for more cases.
 
 **More Scripts:**
 
-- check the [Run.md](https://github.com/ximinng/VectorFusion-pytorch/RUN.md) for more scripts.
+- check the [Run.md](https://github.com/ximinng/VectorFusion-pytorch/blob/master/RUN.md) for more scripts.
 
 ## Acknowledgement
 
