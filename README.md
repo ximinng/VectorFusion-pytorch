@@ -202,14 +202,12 @@ If you use this code for your research, please cite the following work:
   pages={1911--1920},
   year={2023}
 }
-
-@inproceedings{
-    xing2023diffsketcher,
-    title={DiffSketcher: Text Guided Vector Sketch Synthesis through Latent Diffusion Models},
-    author={XiMing Xing and Chuang Wang and Haitao Zhou and Jing Zhang and Qian Yu and Dong Xu},
-    booktitle={Thirty-seventh Conference on Neural Information Processing Systems},
-    year={2023},
-    url={https://openreview.net/forum?id=CY1xatvEQj}
+@inproceedings{xing2023diffsketcher,
+  title={DiffSketcher: Text Guided Vector Sketch Synthesis through Latent Diffusion Models},
+  author={XiMing Xing and Chuang Wang and Haitao Zhou and Jing Zhang and Qian Yu and Dong Xu},
+  booktitle={Thirty-seventh Conference on Neural Information Processing Systems},
+  year={2023},
+  url={https://openreview.net/forum?id=CY1xatvEQj}
 }
 ```
 
