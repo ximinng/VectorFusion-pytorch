@@ -2,7 +2,6 @@
 # Copyright (c) XiMing Xing. All rights reserved.
 # Author: XiMing Xing
 # Description:
-
 from PIL import Image
 from typing import Union, AnyStr, List
 
@@ -11,6 +10,7 @@ import diffusers
 import numpy as np
 from tqdm.auto import tqdm
 import torch
+import torchvision.utils
 from torchvision import transforms
 
 from libs.engine import ModelState
@@ -207,7 +207,7 @@ class VectorFusionPipeline(ModelState):
                 pathn_record.append(pathn)
                 # init graphic
                 img = renderer.init_image(stage=0, num_paths=pathn)
-                log_tensor_img(img, self.results_path, output_prefix=f"init_img_{path_idx}")
+                torchvision.utils.save_image(img, fp=self.results_path / f"init_img_{path_idx}.png")
                 # rebuild optimizer
                 optimizer_list[path_idx].init_optimizers(pid_delta=int(path_idx * pathn))
 
@@ -296,7 +296,7 @@ class VectorFusionPipeline(ModelState):
         self.print(f"negative_prompt: {self.args.negative_prompt}\n")
 
         if self.args.skip_live:
-            target_img = torch.zeros(self.args.batch_size, 3, self.args.image_size, self.args.image_size)
+            target_img = torch.rand(self.args.batch_size, 3, self.args.image_size, self.args.image_size)
             final_svg_fpth = None
             self.print("from scratch with Score Distillation Sampling...")
         else:
@@ -349,7 +349,7 @@ class VectorFusionPipeline(ModelState):
                 L_add = torch.tensor(0.)
                 if self.args.style == "iconography":
                     L_add = xing_loss_fn(renderer.get_point_parameters()) * self.args.xing_loss_weight
-                # pixel_penalty_loss to combat oversaturation
+                # pixel_penalty_loss to combat color over-saturation
                 if self.args.style == "pixelart":
                     L_add = pixel_penalty_loss(raster_img) * self.args.penalty_weight
 
@@ -365,10 +365,13 @@ class VectorFusionPipeline(ModelState):
 
                 # re-init paths
                 if self.step % path_reinit.freq == 0 and self.step < path_reinit.stop_step and self.step != 0:
-                    renderer.reinitialize_paths(path_reinit.use,  # on-off
-                                                path_reinit.opacity_threshold,
-                                                path_reinit.area_threshold,
-                                                fpath=self.reinit_dir / f"reinit-{self.step}.svg")
+                    new_point_params, new_color_params = \
+                        renderer.reinitialize_paths(path_reinit.use,  # on-off
+                                                    f"Step {self.step}",
+                                                    path_reinit.opacity_threshold,
+                                                    path_reinit.area_threshold,
+                                                    fpath=self.reinit_dir / f"reinit-{self.step}.svg")
+                    optimizer.add_params(new_point_params, new_color_params)
 
                 # update lr
                 if self.args.lr_scheduler:

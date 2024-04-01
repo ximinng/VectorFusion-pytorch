@@ -79,24 +79,38 @@ docker run --name vectorfusion --gpus all -it --ipc=host ximingxing/svgrender:v1
 
 ## Quickstart
 
-**Example:**
+### Case: Sydney Opera House
 
-Preview:
+**Prompt:** the Sydney Opera House.<br/>
+**Style:** iconography <br/>
+**Preview:**
 
-| <img src="./img/Sydney_Opera_House_SD.png" style="width: 250px; height: 250px;"> | <img src="./img/Sydney_Opera_House_LIVE.svg" style="width: 250px; height: 250px;"> | <img src="./img/Sydney_Opera_House_finetune.svg" style="width: 250px; height: 250px;"> |
-|----------------------------------------------------------------------------------|------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
-| (a) ) Sample raster image with Stable Diffusion                                  | (b) Convert raster image to a vector via LIVE                                      | (c) VectorFusion: Fine tune by LSDS                                                    |
+| <img src="./img/Icon-SydneyOperaHouse/sample.png" style="width: 250px; height: 250px;"> | <img src="./img/Icon-SydneyOperaHouse/live.svg" style="width: 250px; height: 250px;"> | <img src="./img/Icon-SydneyOperaHouse/finetune.svg" style="width: 250px; height: 250px;"> |
+|-----------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| (a) Sample raster image with Stable Diffusion                                           | (b) Convert raster image to a vector via LIVE                                         | (c) VectorFusion: Fine tune by LSDS                                                       |
 
-Script:
+**LIVE Rendering Process:**
+
+|                        iter 0                         |                        iter 500                         |                        iter 1000                         |                        iter 1500                         | iter 2500                                                | iter 3500                                                |
+|:-----------------------------------------------------:|:-------------------------------------------------------:|:--------------------------------------------------------:|:--------------------------------------------------------:|----------------------------------------------------------|----------------------------------------------------------|
+| <img src="./img/Icon-SydneyOperaHouse/svg_iter0.svg"> | <img src="./img/Icon-SydneyOperaHouse/svg_iter500.svg"> | <img src="./img/Icon-SydneyOperaHouse/svg_iter1000.svg"> | <img src="./img/Icon-SydneyOperaHouse/svg_iter1500.svg"> | <img src="./img/Icon-SydneyOperaHouse/svg_iter2500.svg"> | <img src="./img/Icon-SydneyOperaHouse/svg_iter3500.svg"> |
+
+**VectorFusion Rendering Process:**
+
+|                        iter 0                        |                        iter 100                        |                        iter 300                        |                        iter 400                        | iter 700                                               | iter 1000                                            |
+|:----------------------------------------------------:|:------------------------------------------------------:|:------------------------------------------------------:|:------------------------------------------------------:|--------------------------------------------------------|------------------------------------------------------|
+| <img src="./img/Icon-SydneyOperaHouse/ft_iter0.svg"> | <img src="./img/Icon-SydneyOperaHouse/ft_iter100.svg"> | <img src="./img/Icon-SydneyOperaHouse/ft_iter300.svg"> | <img src="./img/Icon-SydneyOperaHouse/ft_iter400.svg"> | <img src="./img/Icon-SydneyOperaHouse/ft_iter700.svg"> | <img src="./img/Icon-SydneyOperaHouse/finetune.svg"> |
+
+**Script:**
 
 ```shell
 python run_painterly_render.py \ 
   -c vectorfusion.yaml \
   -pt "the Sydney Opera House. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" \
-  -save_step 10 \ 
+  -save_step 50 \ 
   -update "K=4" \ 
-  -respath ./workdir/Sydney \
-  -d 857578 \
+  -respath ./workdir/SydneyOperaHouse \
+  -d 15486 \
   --download
 ```
 
@@ -115,9 +129,52 @@ optional:
 - `-frame_freq`, a.k.a `--video_frame_freq`: the interval of the number of steps to save the image.
 - `-framerate`, a.k.a `--video_frame_rate`: control the playback speed of the output video.
 
+### Case: Ming Dynasty Vase
+
+**Prompt:** A photo of a Ming Dynasty vase on a leather topped table. <br/>
+**Style:** iconography <br/>
+**Preview:**
+
+| <img src="./img/Icon-MingVase/sample.png" style="width: 250px; height: 250px;"> | <img src="./img/Icon-MingVase/live.svg" style="width: 250px; height: 250px;"> | <img src="./img/Icon-MingVase/finetune.svg" style="width: 250px; height: 250px;"> |
+|---------------------------------------------------------------------------------|-------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
+| (a) Sample raster image with Stable Diffusion                                   | (b) Convert raster image to a vector via LIVE                                 | (c) VectorFusion: Fine tune by LSDS                                               |
+
+**Script:**
+
+```shell
+python run_painterly_render.py -c vectorfusion.yaml -pt "A photo of a Ming Dynasty vase on a leather topped table. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 50 -respath ./workdir/vase -update "K=6" -d 683692
+```
+
+### Case: Sloth
+
+**Prompt:** A smiling sloth wearing a leather jacket, a cowboy hat and a kilt. <br/>
+**Style:** iconography <br/>
+**Preview:**
+
+| <img src="./img/Icon-sloth/sample.png" style="width: 250px; height: 250px;"> | <img src="./img/Icon-sloth/live.svg" style="width: 250px; height: 250px;"> | <img src="./img/Icon-sloth/finetune.svg" style="width: 250px; height: 250px;"> |
+|------------------------------------------------------------------------------|----------------------------------------------------------------------------|--------------------------------------------------------------------------------|
+| (a) Sample raster image with Stable Diffusion                                | (b) Convert raster image to a vector via LIVE                              | (c) VectorFusion: Fine tune by LSDS                                            |
+
+**Script:**
+
+```shell
+python run_painterly_render.py -c vectorfusion.yaml -pt "A smiling sloth wearing a leather jacket, a cowboy hat and a kilt. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 50 -respath ./workdir/sloth -update "K=6" -d 280328 
+```
+
+### Other Cases
+
+```shell
+# Pixel-Art style
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "A delicious hamburger. pixel art. trending on artstation" -save_step 50 -respath ./workdir/hamburger -update "style=pixelart" -rdbz
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "Electric guitar. pixel art. trending on artstation" -save_step 50 -respath ./workdir/guitar -update "style=pixelart" -rdbz
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "Pikachu. pixel art. trending on artstation" -save_step 50 -respath ./workdir/Pikachu -update "style=pixelart" -rdbz
+# Sketch style
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "watercolor painting of a firebreathing dragon. minimal 2d line drawing. trending on artstation" -save_step 50 -respath ./workdir/dragon -update "style=sketch skip_live=True num_segments=5 radius=0.5" -rdbz
+```
+
 **More Examples:**
 
-- check the [examples.md](https://github.com/ximinng/VectorFusion-pytorch/blob/master/examples.md) for more cases.
+- check the [Examples.md](https://github.com/ximinng/VectorFusion-pytorch/blob/master/Examples.md) for more cases.
 
 **More Scripts:**
 

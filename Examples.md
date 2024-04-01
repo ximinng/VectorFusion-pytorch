@@ -1,6 +1,20 @@
-# Results
+# Qualitative Results
 
-Here are some results.
+### Case: Owl
+
+**Prompt:** an owl standing on a wire. <br/>
+**Style:** iconography <br/>
+**Preview:**
+
+| <img src="./img/Icon-owl/sample.png" style="width: 250px; height: 250px;"> | <img src="./img/Icon-owl/live.svg" style="width: 250px; height: 250px;"> | <img src="./img/Icon-owl/finetune.svg" style="width: 250px; height: 250px;"> |
+|----------------------------------------------------------------------------|--------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| (a) Sample raster image with Stable Diffusion                              | (b) Convert raster image to a vector via LIVE                            | (c) VectorFusion: Fine tune by LSDS                                          |
+
+**Script:**
+
+```shell
+python run_painterly_render.py -c vectorfusion.yaml -pt "an owl standing on a wire. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 50 -respath ./workdir/owl -update "K=6" -d 857581 
+```
 
 ## Iconography
 
@@ -51,7 +65,7 @@ You will get the following result:
 
 ![temple_iconography](img/temple_iconography.svg)
 
-### from scratch
+### VectorFusion from scratch
 
 - panda
 
@@ -152,7 +166,7 @@ You will get the following result:
 ```shell
 CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py \
 -c vectorfusion.yaml \
--pt "a panda rowing a boat in a pond. minimal flat 2d vector icon. minimal 2d line drawing. trending on artstation." \
+-pt "watercolor painting of a firebreathing dragon. minimal flat 2d vector icon. minimal 2d line drawing. trending on artstation." \
 -respath ./workdir/sd15/panda \
 -update "style=sketch skip_live=True num_segments=5 radius=0.5" \
 -d 44629

@@ -331,6 +331,7 @@ class Painter(nn.Module):
 
     def reinitialize_paths(self,
                            reinit_path: bool = False,
+                           infos: str = '',
                            opacity_threshold: float = None,
                            area_threshold: float = None,
                            fpath: pathlib.Path = None):
@@ -338,13 +339,15 @@ class Painter(nn.Module):
         reinitialize paths, also known as 'Reinitializing paths' in VectorFusion paper.
 
         Args:
+            infos: log infos
             reinit_path: whether to reinitialize paths or not.
             opacity_threshold: Threshold of opacity.
             area_threshold: Threshold of the closed polygon area.
             fpath: The path to save the reinitialized SVG.
         """
-        if self.style == 'iconography' and reinit_path and (not self.train_stroke):
-            # re-init by opacity_threshold
+        if self.style != 'iconography' or (not reinit_path):
+            return None, None
+        else:  # re-init by opacity_threshold
             select_path_ids_by_opc = []
             if opacity_threshold != 0 and opacity_threshold is not None:
                 def get_keys_below_threshold(my_dict, threshold):
@@ -352,43 +355,68 @@ class Painter(nn.Module):
                     return keys_below_threshold
 
                 opacity_record_ = {group.shape_ids.item(): group.fill_color.data[-1].item()
-                                   for group in self.cur_shape_groups}
-                # print("-> opacity_record: ", opacity_record_)
-                print("-> opacity_record: ", [f"{k}: {v:.3f}" for k, v in opacity_record_.items()])
+                                   for group in self.shape_groups}
                 select_path_ids_by_opc = get_keys_below_threshold(opacity_record_, opacity_threshold)
-                print("select_path_ids_by_opc: ", select_path_ids_by_opc)
+
+                if len(select_path_ids_by_opc) > 0:
+                    print("-> opacity_record: ", [f"{k}: {v:.3f}" for k, v in opacity_record_.items()])
+                    print("select_path_ids_by_opc: ", select_path_ids_by_opc)
+                else:
+                    stats_np = np.array(list(opacity_record_.values()))
+                    print(f"-> opacity_record: min: {stats_np.min()}, mean: {stats_np.mean()}, max: {stats_np.max()}")
 
             # remove path by area_threshold
             select_path_ids_by_area = []
             if area_threshold != 0 and area_threshold is not None:
-                area_records = [Polygon(shape.points.detach().numpy()).area for shape in self.cur_shapes]
-                # print("-> area_records: ", area_records)
-                print("-> area_records: ", ['%.2f' % i for i in area_records])
-                for i, shape in enumerate(self.cur_shapes):
+                area_records = [Polygon(shape.points.detach().numpy()).area for shape in self.shapes]
+                for i, shape in enumerate(self.shapes):
                     if Polygon(shape.points.detach().numpy()).area < area_threshold:
                         select_path_ids_by_area.append(shape.id)
-                print("select_path_ids_by_area: ", select_path_ids_by_area)
+
+                if len(select_path_ids_by_area) > 0:
+                    print("-> area_records: ", ['%.2f' % i for i in area_records])
+                    print("select_path_ids_by_area: ", select_path_ids_by_area)
+                else:
+                    stats_np = np.array(area_records)
+                    print(f"-> area_records: min: {stats_np.min()}, mean: {stats_np.mean()}, max: {stats_np.max()}")
 
             # re-init paths
+            extra_point_params, extra_color_params = [], []
             reinit_union = list(set(select_path_ids_by_opc + select_path_ids_by_area))
             if len(reinit_union) > 0:
-                for i, path in enumerate(self.cur_shapes):
+                for i, path in enumerate(self.shapes):
                     if path.id in reinit_union:
-                        self.cur_shapes[i] = self.get_path()
-                for i, group in enumerate(self.cur_shape_groups):
+                        self.shapes[i] = self.get_path()
+                        self.shapes[i].id = path.id
+                        self.shapes[i].points.requires_grad = True
+                        extra_point_params.append(self.shapes[i].points)
+
+                for i, group in enumerate(self.shape_groups):
                     shp_ids = group.shape_ids.cpu().numpy().tolist()
                     if set(shp_ids).issubset(reinit_union):
-                        fill_color_init = torch.FloatTensor(np.random.uniform(size=[4]))
-                        fill_color_init[-1] = np.random.uniform(0.7, 1)
-                        stroke_color_init = torch.FloatTensor(np.random.uniform(size=[4]))
-                        self.cur_shape_groups[i] = pydiffvg.ShapeGroup(
-                            shape_ids=torch.tensor(list(shp_ids)),
-                            fill_color=fill_color_init,
-                            stroke_color=stroke_color_init)
+                        if self.train_stroke:
+                            stroke_color_init = torch.FloatTensor(np.random.uniform(size=[4]))
+                            self.shape_groups[i] = pydiffvg.ShapeGroup(
+                                shape_ids=torch.tensor(list(shp_ids)),
+                                fill_color=None,
+                                stroke_color=stroke_color_init)
+                            self.shape_groups[i].stroke_color.requires_grad = True
+                            extra_color_params.append(self.shape_groups[i].stroke_color)
+                        else:
+                            fill_color_init = torch.FloatTensor(np.random.uniform(size=[4]))
+                            fill_color_init[-1] = np.random.uniform(0.7, 1)
+                            self.shape_groups[i] = pydiffvg.ShapeGroup(
+                                shape_ids=torch.tensor(list(shp_ids)),
+                                fill_color=fill_color_init,
+                                stroke_color=None)
+                            self.shape_groups[i].fill_color.requires_grad = True
+                            extra_color_params.append(self.shape_groups[i].fill_color)
+
                 # save reinit svg
                 self.save_svg(fpath)
 
-            print("-" * 40)
+            print(f"{'-' * 30} {infos} Reinitializing Paths End {'-' * 30}\n")
+            return extra_point_params, extra_color_params
 
     def render_warp(self, seed=0):
         scene_args = pydiffvg.RenderFunction.serialize_scene(
@@ -676,10 +704,11 @@ class PainterOptimizer:
         if self.lr_lambda is not None:
             self.scheduler = LambdaLR(self.optimizer, lr_lambda=self.lr_lambda, last_epoch=-1)
 
-    def update_params(self, name: str, value: torch.tensor):
-        for param_group in self.learnable_params:
-            if param_group.get('_id') == name:
-                param_group['params'] = value
+    def add_params(self, point_params, color_params):
+        if point_params is not None and len(point_params) > 0:
+            self.optimizer.add_param_group({f'params': point_params, 'lr': self.lr_base['point'], '_id': 'new'})
+        if color_params is not None and len(color_params) > 0:
+            self.optimizer.add_param_group({f'params': color_params, 'lr': self.lr_base['color'], '_id': 'new'})
 
     def update_lr(self):
         if self.scheduler is not None:
@@ -694,6 +723,8 @@ class PainterOptimizer:
     def get_lr(self) -> Dict:
         lr = {}
         for _group in self.optimizer.param_groups:
+            if _group['lr'] == 'new':
+                continue
             lr[_group['_id']] = _group['lr']
         return lr
 

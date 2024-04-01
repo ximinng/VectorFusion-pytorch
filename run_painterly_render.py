@@ -63,8 +63,8 @@ if __name__ == '__main__':
     # config
     parser.add_argument("-c", "--config",
                         required=True, type=str,
-                        default="",
-                        help="YAML/YML file for configuration.")
+                        default="vectorfusion.yaml",
+                        help="YAML file for configuration.")
     # prompt
     parser.add_argument("-pt", "--prompt", default="A horse is drinking water by the lake", type=str)
     parser.add_argument("-npt", "--negative_prompt", default="", type=str)

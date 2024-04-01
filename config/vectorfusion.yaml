@@ -1,10 +1,9 @@
-image_size: 600
+image_size: 600 # canvas size
 path_svg: ~  # if you want to load a svg file and train from it
-skip_live: False
+skip_live: False # Whether to skip the LIVE phase
 style: "iconography" # "pixelart", "sketch"
 
 # train
-batch_size: 1
 num_iter: 500 # num_iter per path group
 num_stages: 1 # training stages, you can train x strokes, then freeze them and train another x strokes etc
 lr_base:
@@ -17,8 +16,8 @@ lr_scheduler: True
 
 # primitives
 num_paths: 128 # number of strokes
-path_schedule: 'repeat' # 'list'
-schedule_each: 16 # [1, 3, 5, 7]
+path_schedule: 'repeat' # or 'list'
+schedule_each: 16 # or [1, 3, 5, 7]
 train_stroke: False # train stroke width and color
 trainable_bg: False # set the background to be trainable
 width: 3 # stroke width
@@ -46,14 +45,14 @@ lora_path: ~
 
 # SDS
 sds:
-  im_size: 512
-  guidance_scale: 100
-  grad_scale: 1.0
-  t_range: [ 0.05, 0.95 ]
+  im_size: 512 # input size
+  guidance_scale: 100 # CFG
+  grad_scale: 1.0 # the weight of SDS grads
+  t_range: [ 0.05, 0.95 ] # timestep range
   num_iter: 1000 # fine-tuning steps
 
-# Live loss
+# LIVE loss
 use_distance_weighted_loss: True
 xing_loss_weight: 0.01
-# pixel loss
+# color penalty loss for pixel-art
 penalty_weight: 0.05
