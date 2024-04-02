@@ -1,8 +1,6 @@
-# RUN
+# VectorFusion Run Scripts
 
-## # VectorFusion:
-
-### Iconography
+## Iconography
 
 **baseline: text-to-image-to-vector:**
 
@@ -38,7 +36,7 @@ CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "
 CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "a panda rowing a boat in a pond. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 10 -respath ./VF/ZPanda -update "skip_live=True image_size=1024 sds.num_iter=2000 path_reinit.stop_step=1500 path_reinit.area_threshold=0 guidance_scale=5.0" -d 8888
 ```
 
-### Sketch
+## Sketch
 
 **from scratch:**
 
@@ -46,10 +44,10 @@ CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "
 CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "a panda rowing a boat in a pond. minimal 2d line drawing. trending on artstation." -save_step 10 -respath ./workdir/ZPanda_sketch -update "style=sketch skip_live=True num_segments=5 radius=0.5" -d 8888
 ```
 
-### Pixel Art
+## Pixel-Art
 
 **baseline: text-to-image-to-vector:**
 
 ```shell
-CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "a panda rowing a boat in a pond. pixel art. trending on artstation." -save_step 10 -respath ./workdir/ZPanda_pixel -update "style=pixelart image_size=512" -d 8888
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "a panda rowing a boat in a pond. pixel art. trending on artstation." -save_step 10 -respath ./workdir/ZPanda_pixel -update "style=pixelart" -d 8888
 ```

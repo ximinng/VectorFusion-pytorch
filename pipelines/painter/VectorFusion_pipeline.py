@@ -25,6 +25,7 @@ from methods.diffvg_warp import init_diffvg
 class VectorFusionPipeline(ModelState):
 
     def __init__(self, args):
+        args.skip_live = True if args.style == 'sketch' else args.skip_live
         logdir_ = f"{'scratch' if args.skip_live else 'baseline'}" \
                   f"-{args.model_id}" \
                   f"-{args.style}" \
@@ -360,8 +361,7 @@ class VectorFusionPipeline(ModelState):
                 loss.backward()
                 optimizer.step_()
 
-                if self.args.style != "sketch":
-                    renderer.clip_curve_shape()
+                renderer.clip_curve_shape()
 
                 # re-init paths
                 if self.step % path_reinit.freq == 0 and self.step < path_reinit.stop_step and self.step != 0:

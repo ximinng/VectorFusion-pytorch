@@ -145,31 +145,51 @@ optional:
 python run_painterly_render.py -c vectorfusion.yaml -pt "A photo of a Ming Dynasty vase on a leather topped table. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 50 -respath ./workdir/vase -update "K=6" -d 683692
 ```
 
-### Case: Sloth
+### Case: Guitar
 
-**Prompt:** A smiling sloth wearing a leather jacket, a cowboy hat and a kilt. <br/>
-**Style:** iconography <br/>
+**Prompt:** Electric guitar. <br/>
+**Style:** Pixel-Art <br/>
 **Preview:**
 
-| <img src="./img/Icon-sloth/sample.png" style="width: 250px; height: 250px;"> | <img src="./img/Icon-sloth/live.svg" style="width: 250px; height: 250px;"> | <img src="./img/Icon-sloth/finetune.svg" style="width: 250px; height: 250px;"> |
-|------------------------------------------------------------------------------|----------------------------------------------------------------------------|--------------------------------------------------------------------------------|
-| (a) Sample raster image with Stable Diffusion                                | (b) Convert raster image to a vector via LIVE                              | (c) VectorFusion: Fine tune by LSDS                                            |
+| <img src="./img/Pixel-Guitar/sample.png" style="width: 250px; height: 250px;"> | <img src="./img/Pixel-Guitar/live.svg" style="width: 250px; height: 250px;"> | <img src="./img/Pixel-Guitar/finetune.svg" style="width: 250px; height: 250px;"> |
+|--------------------------------------------------------------------------------|------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| (a) Sample raster image with Stable Diffusion                                  | (b) Convert raster image to a vector via LIVE                                | (c) VectorFusion: Fine tune by LSDS                                              |
 
 **Script:**
 
 ```shell
-python run_painterly_render.py -c vectorfusion.yaml -pt "A smiling sloth wearing a leather jacket, a cowboy hat and a kilt. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 50 -respath ./workdir/sloth -update "K=6" -d 280328 
+python run_painterly_render.py -c vectorfusion.yaml -pt "Electric guitar. pixel art. trending on artstation" -save_step 50 -respath ./workdir/guitar -update "style=pixelart" -d 445997  
+```
+
+### Case: Dragon
+
+**Prompt:** watercolor painting of a firebreathing dragon. <br/>
+**Style:** Sketch <br/>
+**Preview:**
+
+| <img src="./img/Sketch-Dragon/svg_iter0.svg"> | <img src="./img/Sketch-Dragon/svg_iter500.svg"> | <img src="./img/Sketch-Dragon/finetune.svg"> |
+|-----------------------------------------------|-------------------------------------------------|----------------------------------------------|
+| SVG initialization                            | VectorFusion fine-tune 500 step                 | VectorFusion fine-tune 1500 step             |
+
+**Script:**
+
+```shell
+python run_painterly_render.py -c vectorfusion.yaml -pt "watercolor painting of a firebreathing dragon. minimal 2d line drawing. trending on artstation" -save_step 50 -respath ./workdir/dragon-sketch -update "style=sketch num_segments=5 radius=0.5 sds.num_iter=1500" -d 947593  
 ```
 
 ### Other Cases
 
 ```shell
+# Iconography style
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "A Starbucks coffee. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 50 -respath ./workdir/Starbucks -rdbz
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "fire. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 50 -respath ./workdir/fire -rdbz
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "a panda rowing a boat in a pond. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 50 -respath ./workdir/pandas -rdbz
 # Pixel-Art style
-CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "A delicious hamburger. pixel art. trending on artstation" -save_step 50 -respath ./workdir/hamburger -update "style=pixelart" -rdbz
-CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "Electric guitar. pixel art. trending on artstation" -save_step 50 -respath ./workdir/guitar -update "style=pixelart" -rdbz
 CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "Pikachu. pixel art. trending on artstation" -save_step 50 -respath ./workdir/Pikachu -update "style=pixelart" -rdbz
 # Sketch style
-CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "watercolor painting of a firebreathing dragon. minimal 2d line drawing. trending on artstation" -save_step 50 -respath ./workdir/dragon -update "style=sketch skip_live=True num_segments=5 radius=0.5" -rdbz
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "watercolor painting of a firebreathing dragon. minimal 2d line drawing. trending on artstation" -save_step 50 -respath ./workdir/dragon-sketch -update "style=sketch skip_live=True num_paths=32 num_segments=5 radius=0.5 sds.num_iter=1500" -rdbz
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "The Eiffel Tower. minimal 2d line drawing. trending on artstation" -save_step 50 -respath ./workdir/EiffelTower-sketch -update "style=sketch skip_live=True num_paths=32 num_segments=5 radius=0.5 sds.num_iter=1500" -rdbz
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "A cat. minimal 2d line drawing. trending on artstation" -save_step 50 -respath ./workdir/cat-sketch -update "style=sketch skip_live=True num_paths=32 num_segments=5 radius=0.5 sds.num_iter=1500" -rdbz
 ```
 
 **More Examples:**

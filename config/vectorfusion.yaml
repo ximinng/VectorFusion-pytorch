@@ -25,22 +25,22 @@ num_segments: 4
 segment_init: 'circle' # 'random'
 radius: 20
 coord_init: 'sparse' # 'random', 'naive', place the first control point
-grid: 32 # divide the canvas into n grids
+grid: 30 # divide the canvas into n grids
 path_reinit: # reinitializing paths
   use: True
   freq: 50 # every 50 iterations
   stop_step: 800 # for SDS fine-tuning
-  opacity_threshold: 0.05
-  area_threshold: 64
+  opacity_threshold: 0.05 # Re-initialize the path if the opacity is lower than the threshold
+  area_threshold: 64 # Re-initialize the path if the area is lower than the threshold
 
 # diffusion
 model_id: "sd15" # sd14, sd15, sd21, sd21b, sdxl
 ldm_speed_up: False
 enable_xformers: True
 gradient_checkpoint: False
-num_inference_steps: 50
-guidance_scale: 7.5 # sdxl default 5.0
-K: 6
+num_inference_steps: 50 # DDIM sampling step
+guidance_scale: 7.5 # CFG
+K: 6 # reject sampling
 lora_path: ~
 
 # SDS

@@ -59,7 +59,7 @@ class Painter(nn.Module):
         self.shapes = []  # record all paths
         self.shape_groups = []
         self.cur_shapes, self.cur_shape_groups = [], []  # record the current optimized path
-        self.points_vars = []
+        self.point_vars = []
         self.color_vars = []
         self.stroke_width_vars = []
         self.stroke_color_vars = []
@@ -323,11 +323,17 @@ class Painter(nn.Module):
         return path
 
     def clip_curve_shape(self):
-        for group in self.shape_groups:
-            if self.train_stroke:
-                group.stroke_color.data.clamp_(0.0, 1.0)
-            else:
-                group.fill_color.data.clamp_(0.0, 1.0)
+        if self.style == 'sketch':
+            # width clip
+            for path in self.shapes:
+                path.stroke_width.data.clamp_(1.0, self.stroke_width)
+        else:
+            # color clip
+            for group in self.shape_groups:
+                if group.stroke_color is not None:
+                    group.stroke_color.data.clamp_(0.0, 1.0)
+                if group.fill_color is not None:
+                    group.fill_color.data.clamp_(0.0, 1.0)
 
     def reinitialize_paths(self,
                            reinit_path: bool = False,
@@ -464,12 +470,12 @@ class Painter(nn.Module):
 
     def set_points_parameters(self, id_delta=0):
         # stroke`s location optimization
-        self.points_vars = []
+        self.point_vars = []
         self.stroke_width_vars = []
         for i, path in enumerate(self.cur_shapes):
             path.id = i + id_delta  # set point id
             path.points.requires_grad = True
-            self.points_vars.append(path.points)
+            self.point_vars.append(path.points)
 
             if self.train_stroke:
                 path.stroke_width.requires_grad = True
@@ -488,7 +494,7 @@ class Painter(nn.Module):
                 self.stroke_color_vars.append(group.stroke_color)
 
     def get_point_parameters(self):
-        return self.points_vars
+        return self.point_vars
 
     def get_color_parameters(self):
         return self.color_vars
@@ -500,11 +506,7 @@ class Painter(nn.Module):
         return self.para_bg
 
     def save_svg(self, fpath):
-        pydiffvg.save_svg(f'{fpath}',
-                          self.canvas_width,
-                          self.canvas_height,
-                          self.shapes,
-                          self.shape_groups)
+        pydiffvg.save_svg(f'{fpath}', self.canvas_width, self.canvas_height, self.shapes, self.shape_groups)
 
     def load_svg(self, path_svg):
         canvas_width, canvas_height, shapes, shape_groups = pydiffvg.svg_to_scene(path_svg)
@@ -668,9 +670,8 @@ class PainterOptimizer:
             self.lr_lambda = LinearDecayLRLambda(self.num_iter, decay_ratio=0.4)
         if style == 'sketch':
             self.optim_point, self.optim_color = True, False
-            self.lr_lambda = SketchLRLambda(self.num_iter,
-                                            warmup_steps=500, warmup_start_lr=0.02, warmup_end_lr=0.2,
-                                            cosine_end_lr=0.05)
+            self.lr_lambda = SketchLRLambda(self.num_iter, warmup_steps=500, warmup_start_lr=0.02, warmup_end_lr=0.2,
+                                            cosine_end_lr=0.1)
 
         self.optimizer = None
         self.scheduler = None
