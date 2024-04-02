@@ -5,6 +5,11 @@ used to
 generate SVG-exportable vector graphics.
 
 > official website: https://vectorfusion.github.io/
+>
+<figure style="text-align: center">
+  <img src="./img/vectorfusion_64paths_72videos_encode2p5k.gif" style="width: 90%; height: auto;" alt="VF video">
+  <figcaption>VectorFusion Rendering Process. (64paths, 72videos, 5k)</figcaption>
+</figure>
 
 ## Updates
 
@@ -15,7 +20,7 @@ generate SVG-exportable vector graphics.
   the go-to library for state-of-the-art differentiable rendering methods for image vectorization.**
 - [10/2023] 🔥 **We released the [DiffSketcher code](https://github.com/ximinng/DiffSketcher). A method of synthesizing
   vector sketches by text prompts.**
-- [10/2023] 🔥 We released the VectorFusion code.
+- [10/2023] 🔥 We reproduce the VectorFusion code.
 
 ## Installation
 
