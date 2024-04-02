@@ -6,12 +6,10 @@ generate SVG-exportable vector graphics.
 
 > official website: https://vectorfusion.github.io/
 
-<figure>
-<center>
+<div align="center">
   <img src="./img/vectorfusion_64paths_72videos_encode2p5k.gif" style="width: 100%; height: auto;" alt="VF video">
-  <figcaption>VectorFusion rendering process. (64paths, 72videos, 5k)</figcaption>
-</center>
-</figure>
+  <p>VectorFusion rendering process. (64paths, 72videos, 5k)</p>
+</div>
 
 ## Updates
 
