@@ -113,7 +113,7 @@ python run_painterly_render.py \
   -c vectorfusion.yaml \
   -pt "the Sydney Opera House. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" \
   -save_step 50 \ 
-  -update "K=4" \ 
+  -update "K=6" \ 
   -respath ./workdir/SydneyOperaHouse \
   -d 15486 \
   --download
@@ -147,7 +147,7 @@ optional:
 **Script:**
 
 ```shell
-python run_painterly_render.py -c vectorfusion.yaml -pt "A photo of a Ming Dynasty vase on a leather topped table. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 50 -respath ./workdir/vase -update "K=6" -d 683692
+python run_painterly_render.py -c vectorfusion.yaml -pt "A photo of a Ming Dynasty vase on a leather topped table. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 50 -respath ./workdir/vase -d 683692
 ```
 
 ### Case: Guitar
@@ -179,18 +179,14 @@ python run_painterly_render.py -c vectorfusion.yaml -pt "Electric guitar. pixel 
 **Script:**
 
 ```shell
-python run_painterly_render.py -c vectorfusion.yaml -pt "watercolor painting of a firebreathing dragon. minimal 2d line drawing. trending on artstation" -save_step 50 -respath ./workdir/dragon-sketch -update "style=sketch num_segments=5 radius=0.5 sds.num_iter=1500" -d 947593  
+python run_painterly_render.py -c vectorfusion.yaml -pt "watercolor painting of a firebreathing dragon. minimal 2d line drawing. trending on artstation" -save_step 50 -respath ./workdir/dragon-sketch -update "style=sketch num_segments=5 radius=0.5 sds.num_iter=1500" -d 106764  
 ```
 
 ### Other Cases
 
 ```shell
 # Iconography style
-CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "A Starbucks coffee. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 50 -respath ./workdir/Starbucks -rdbz
-CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "fire. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 50 -respath ./workdir/fire -rdbz
-CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "a panda rowing a boat in a pond. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 50 -respath ./workdir/pandas -rdbz
-# Pixel-Art style
-CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "Pikachu. pixel art. trending on artstation" -save_step 50 -respath ./workdir/Pikachu -update "style=pixelart" -rdbz
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "An astronaut figure. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" -save_step 50 -respath ./workdir/astronaut -rdbz
 # Sketch style
 CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "watercolor painting of a firebreathing dragon. minimal 2d line drawing. trending on artstation" -save_step 50 -respath ./workdir/dragon-sketch -update "style=sketch skip_live=True num_paths=32 num_segments=5 radius=0.5 sds.num_iter=1500" -rdbz
 CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "The Eiffel Tower. minimal 2d line drawing. trending on artstation" -save_step 50 -respath ./workdir/EiffelTower-sketch -update "style=sketch skip_live=True num_paths=32 num_segments=5 radius=0.5 sds.num_iter=1500" -rdbz
