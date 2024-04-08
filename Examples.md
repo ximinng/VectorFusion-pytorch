@@ -170,6 +170,22 @@ python run_painterly_render.py -c vectorfusion.yaml -pt "A delicious hamburger. 
 python run_painterly_render.py -c vectorfusion.yaml -pt "watercolor painting of a firebreathing dragon. minimal 2d line drawing. trending on artstation" -save_step 50 -respath ./workdir/dragon-sketch -update "style=sketch num_segments=5 radius=0.5 sds.num_iter=1500" -d 947593  
 ```
 
+### Case: The Eiffel Tower
+
+**Prompt:** The Eiffel Tower. <br/>
+**Style:** Sketch <br/>
+**Preview:**
+
+| <img src="./img/Sketch-EiffelTower/svg_iter0.svg"> | <img src="./img/Sketch-EiffelTower/svg_iter500.svg"> | <img src="./img/Sketch-EiffelTower/finetune.svg"> |
+|----------------------------------------------------|------------------------------------------------------|---------------------------------------------------|
+| SVG initialization                                 | VectorFusion fine-tune 500 step                      | VectorFusion fine-tune 1500 step                  |
+
+**Script:**
+
+```shell
+CUDA_VISIBLE_DEVICES=0 python run_painterly_render.py -c vectorfusion.yaml -pt "The Eiffel Tower. minimal 2d line drawing. trending on artstation" -save_step 50 -respath ./workdir/EiffelTower-sketch -update "style=sketch skip_live=True num_segments=5 radius=0.5 sds.num_iter=1500" -d 965058  
+```
+
 ### Case: Temple
 
 **Prompt:** A 3D rendering of a temple. <br/>
