@@ -22,64 +22,25 @@ generate SVG-exportable vector graphics.
   vector sketches by text prompts.**
 - [10/2023] 🔥 We reproduce the VectorFusion code.
 
-## Installation
+## Installation Guide
 
-### Step by step
+To quickly get started with **DiffSketcher**, follow the steps below.  
+These instructions will help you run **quick inference locally**.
 
-Create a new conda environment:
+#### 🚀 **Option 1: Standard Installation**
+
+Run the following command in the **top-level directory**:
 
 ```shell
-conda create --name vf python=3.10
-conda activate vf
+chmod +x script/install.sh
+bash script/install.sh
 ```
 
-Install pytorch and the following libraries:
+#### 🐳 Option 2: Using Docker
 
 ```shell
-conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 pytorch-cuda=11.6 -c pytorch -c nvidia
-pip install omegaconf BeautifulSoup4
-pip install shapely
-pip install opencv-python scikit-image matplotlib visdom wandb
-pip install triton numba
-pip install numpy scipy timm scikit-fmm einops
-pip install accelerate transformers safetensors datasets
-```
-
-Install CLIP:
-
-```shell
-pip install ftfy regex tqdm
-pip install git+https://github.com/openai/CLIP.git
-```
-
-Install diffusers:
-
-```shell
-pip install diffusers==0.20.2
-```
-
-Install xformers (require `python=3.10`):
-
-```shell
-conda install xformers -c xformers
-```
-
-Install diffvg:
-
-```shell
-git clone https://github.com/BachiLi/diffvg.git
-cd diffvg
-git submodule update --init --recursive
-conda install -y -c anaconda cmake
-conda install -y -c conda-forge ffmpeg
-pip install svgwrite svgpathtools cssutils torch-tools
-python setup.py install
-```
-
-### Docker Usage
-
-```shell
-docker run --name vectorfusion --gpus all -it --ipc=host ximingxing/svgrender:v1 /bin/bash
+chmod +x script/run_docker.sh
+sudo bash script/run_docker.sh
 ```
 
 ## Quickstart
@@ -114,7 +75,7 @@ python run_painterly_render.py \
   -pt "the Sydney Opera House. minimal flat 2d vector icon. lineal color. on a white background. trending on artstation" \
   -save_step 50 \ 
   -update "K=6" \ 
-  -respath ./workdir/SydneyOperaHouse \
+  -respath workdir/SydneyOperaHouse \
   -d 15486 \
   --download
 ```
